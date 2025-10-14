@@ -15,12 +15,19 @@ HEADERS = {
 }
 
 TASKS = [
-    "Morning review 🌞",
+    " Leetcode🧑🏻‍💻",
     "Top coding task 💻",
-    "Read / Study 📖",
     "Workout 🏋️",
     "Plan next day 🧭"
 ]
+def ordinal(n: int) -> str:
+    """Return ordinal string for an integer: 1 -> '1st', 2 -> '2nd', 3 -> '3rd', 4 -> '4th', ..."""
+    # 11,12,13 are special -> 'th'
+    if 10 <= (n % 100) <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
 
 def build_children(tasks):
     return [
@@ -35,8 +42,9 @@ def build_children(tasks):
     ]
 
 def create_page():
-    today = datetime.now().strftime("%Y-%m-%d")
-    title = f"Daily ✅ {today}"
+    #today = datetime.now().strftime("%Y-%m-%d") 
+    formatted_date = f"{datetime.now().strftime('%B')} {ordinal(datetime.now().day)}, {datetime.now().year}"
+    title = f" {formatted_date}✅ "
     payload = {
         "parent": {"type": "page_id", "page_id": PARENT_PAGE_ID},
         "properties": {"title": [{"type": "text", "text": {"content": title}}]},
