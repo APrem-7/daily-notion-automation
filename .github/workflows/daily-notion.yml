@@ -1,0 +1,27 @@
+name: Daily Notion Creator
+
+on:
+  schedule:
+    - cron: '35 18 * * *'  # runs daily at 00:05 IST
+  workflow_dispatch:
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Run script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_PARENT_PAGE_ID: ${{ secrets.NOTION_PARENT_PAGE_ID }}
+        run: python create_daily_notion_page.py
