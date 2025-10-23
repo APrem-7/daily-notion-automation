@@ -1,4 +1,4 @@
-<h1 align="center">Hi 👋, I'm Ananda Prem R</h1>
+<h1 align="center">To Do List Automation</h1>
 <h3 align="center">This is a Python Script Which Generates a new notion Todo List Page Everyday :)</h3>
 
 <h3 align="left">Connect with me:</h3>
