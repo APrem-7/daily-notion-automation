@@ -48,7 +48,8 @@ def create_page():
     payload = {
         "parent": {"type": "page_id", "page_id": PARENT_PAGE_ID},
         "properties": {"title": [{"type": "text", "text": {"content": title}}]},
-        "children": build_children(TASKS)
+        "children": build_children(TASKS),
+        "after": PARENT_PAGE_ID  # Add this line - positions new page at the top
     }
     response = requests.post(URL, headers=HEADERS, json=payload)
     if response.status_code == 200:
