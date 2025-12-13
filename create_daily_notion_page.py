@@ -1,6 +1,6 @@
 import os
 import requests
-from datetime import datetime
+from datetime import datetime,timezone,timedelta
 
 NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
 PARENT_PAGE_ID = os.environ.get("NOTION_PARENT_PAGE_ID")
@@ -45,8 +45,10 @@ def build_children(tasks):
     ]
 
 def create_page():
+
+    IST = timezone(timedelta(hours=5, minutes=30))
     #today = datetime.now().strftime("%Y-%m-%d") 
-    formatted_date = f"{datetime.now().strftime('%B')} {ordinal(datetime.now().day)}, {datetime.now().year}"
+    formatted_date = f"{datetime.now(IST).strftime('%B')} {ordinal(datetime.now().day)}, {datetime.now().year}"
     title = f" {formatted_date}✅ "
     payload = {
         "parent": {"type": "page_id", "page_id": PARENT_PAGE_ID},

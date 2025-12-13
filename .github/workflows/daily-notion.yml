@@ -2,7 +2,7 @@ name: Daily Notion Creator
 
 on:
   schedule:
-    - cron: '35 18 * * *'  # runs daily at 00:05 IST
+    - cron: "35 18 * * *" # runs daily at 00:05 IST
   workflow_dispatch:
 
 jobs:
