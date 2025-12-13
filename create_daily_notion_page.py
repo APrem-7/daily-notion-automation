@@ -22,7 +22,6 @@ TASKS = [
     "Book Reading 📖",
     "Sandhyavandhan 🕉️",
     "Meditation 🕉️"
-
 ]
 def ordinal(n: int) -> str:
     """Return ordinal string for an integer: 1 -> '1st', 2 -> '2nd', 3 -> '3rd', 4 -> '4th', ..."""
