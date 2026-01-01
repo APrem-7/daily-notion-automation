@@ -63,6 +63,7 @@ def get_or_create_monthly_page(year: int, month_name: str) -> str:
     
     search_response = requests.post(SEARCH_URL, headers=HEADERS, json=search_payload)
     
+    # Only process search results if the request was successful
     if search_response.status_code == 200:
         results = search_response.json().get("results", [])
         # Check if any result matches exactly and is a child of PARENT_PAGE_ID
@@ -77,8 +78,10 @@ def get_or_create_monthly_page(year: int, month_name: str) -> str:
                         if parent.get("type") == "page_id" and parent.get("page_id") == PARENT_PAGE_ID:
                             print(f"📅 Found existing monthly page: {monthly_title}")
                             return result["id"]
+    else:
+        print(f"⚠️ Search request failed with status {search_response.status_code}, creating new monthly page")
     
-    # Create new monthly page if not found
+    # Create new monthly page if not found or search failed
     print(f"📅 Creating new monthly page: {monthly_title}")
     monthly_payload = {
         "parent": {"type": "page_id", "page_id": PARENT_PAGE_ID},
@@ -93,8 +96,9 @@ def get_or_create_monthly_page(year: int, month_name: str) -> str:
         print(f"✅ Created monthly page: {monthly_title}")
         return monthly_page_id
     else:
-        print(f"❌ Failed to create monthly page: {create_response.status_code}, {create_response.text}")
-        create_response.raise_for_status()
+        error_msg = f"❌ Failed to create monthly page: {create_response.status_code}, {create_response.text}"
+        print(error_msg)
+        raise Exception(error_msg)
 
 def create_page():
 
