@@ -1,6 +1,13 @@
 <h1 align="center">To Do List Automation</h1>
 <h3 align="center">This is a Python Script Which Generates a new notion Todo List Page Everyday :)</h3>
 
+## Features
+
+- 📅 **Automatic Daily Pages**: Creates a new todo list page every day with your tasks
+- 📂 **Monthly Organization**: Automatically bundles each month's daily pages under a monthly parent page (e.g., "January 2026", "December 2025")
+- 🔄 **Smart Detection**: Finds existing monthly pages or creates new ones as needed
+- ✅ **Pre-configured Tasks**: Includes default tasks like Leetcode, Workout, Book Reading, and more
+
 <h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://linkedin.com/in/https://www.linkedin.com/in/ananda-prem/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="https://www.linkedin.com/in/ananda-prem/" height="30" width="40" /></a>
