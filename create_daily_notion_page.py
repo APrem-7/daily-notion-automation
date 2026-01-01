@@ -26,6 +26,9 @@ TASKS = [
     "Meditation 🕉️"
 ]
 
+# Rate limiting delay between API calls (in seconds)
+RATE_LIMIT_DELAY = 0.3
+
 
 def ordinal(n: int) -> str:
     """Return ordinal string for an integer: 1 -> '1st', 2 -> '2nd', 3 -> '3rd', 4 -> '4th', ..."""
@@ -71,6 +74,7 @@ def get_all_child_pages(parent_id):
             has_more = data.get("has_more", False)
             start_cursor = data.get("next_cursor")
         else:
+            print(f"⚠️ Failed to get child pages: {response.status_code} - {response.text}")
             break
     
     return all_pages
@@ -122,7 +126,7 @@ def move_page_to_top(page_id, parent_id):
                 print(f"  📦 Archived page {i + 1}")
             else:
                 print(f"  ⚠️ Failed to archive page {i + 1}")
-            time.sleep(0.3)  # Rate limiting
+            time.sleep(RATE_LIMIT_DELAY)
     
     # Archive the new page too
     archive_response = requests.patch(
@@ -134,7 +138,7 @@ def move_page_to_top(page_id, parent_id):
         print("⚠️ Failed to archive new page")
         return False
     print("  📦 Archived new page")
-    time.sleep(0.3)
+    time.sleep(RATE_LIMIT_DELAY)
     
     # Unarchive the new page first (it will be added at the end, which is now position 0)
     unarchive_response = requests.patch(
@@ -147,7 +151,7 @@ def move_page_to_top(page_id, parent_id):
     else:
         print("  ⚠️ Failed to restore new page")
         return False
-    time.sleep(0.3)
+    time.sleep(RATE_LIMIT_DELAY)
     
     # Unarchive the rest in their original order
     for i, page_id_to_restore in enumerate(pages_to_reorder):
@@ -160,7 +164,7 @@ def move_page_to_top(page_id, parent_id):
             print(f"  📤 Restored page {i + 2}")
         else:
             print(f"  ⚠️ Failed to restore page {i + 2}")
-        time.sleep(0.3)  # Rate limiting
+        time.sleep(RATE_LIMIT_DELAY)
     
     print("✅ Successfully moved new page to the top!")
     return True
@@ -168,7 +172,8 @@ def move_page_to_top(page_id, parent_id):
 
 def create_page():
     IST = timezone(timedelta(hours=5, minutes=30))
-    formatted_date = f"{datetime.now(IST).strftime('%B')} {ordinal(datetime.now().day)}, {datetime.now().year}"
+    now = datetime.now(IST)
+    formatted_date = f"{now.strftime('%B')} {ordinal(now.day)}, {now.year}"
     title = f" {formatted_date}✅ "
     
     # Step 1: Create the page
@@ -188,7 +193,9 @@ def create_page():
     print(f"✅ Created page: {title}")
     
     # Step 2: Move the page to the top
-    move_page_to_top(new_page_id, PARENT_PAGE_ID)
+    success = move_page_to_top(new_page_id, PARENT_PAGE_ID)
+    if not success:
+        print("⚠️ Warning: Failed to move page to top, it will remain at the bottom")
 
 
 if __name__ == "__main__":
