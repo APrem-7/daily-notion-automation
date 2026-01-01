@@ -1,6 +1,6 @@
 import os
 import requests
-from datetime import datetime,timezone,timedelta
+from datetime import datetime, timezone, timedelta
 
 NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
 PARENT_PAGE_ID = os.environ.get("NOTION_PARENT_PAGE_ID")
@@ -101,10 +101,8 @@ def get_or_create_monthly_page(year: int, month_name: str) -> str:
         raise Exception(error_msg)
 
 def create_page():
-
     IST = timezone(timedelta(hours=5, minutes=30))
     now = datetime.now(IST)
-    #today = datetime.now().strftime("%Y-%m-%d") 
     formatted_date = f"{now.strftime('%B')} {ordinal(now.day)}, {now.year}"
     title = f" {formatted_date}✅ "
     
@@ -116,8 +114,7 @@ def create_page():
     payload = {
         "parent": {"type": "page_id", "page_id": monthly_page_id},
         "properties": {"title": [{"type": "text", "text": {"content": title}}]},
-        "children": build_children(TASKS),
-        
+        "children": build_children(TASKS)
     }
     response = requests.post(URL, headers=HEADERS, json=payload)
     if response.status_code == 200:
